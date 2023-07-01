@@ -1,0 +1,67 @@
+.navbar {
+    background-color: #fdc800;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    &-toggler {
+      &:focus {
+        box-shadow: none;
+      }
+    }
+    .dropdown {
+      &-menu {
+        border: 0;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        right: 0;
+        left: auto;
+      }
+    }
+    .logo {
+        img {
+          height: 50px;  
+        }
+        color: $text-color;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 20px;
+    }   
+    @media screen and(max-width: 991px) {
+      &-toggle {
+        order: 2;
+        position: relative;
+      }
+      &-acc {
+        order: 1;
+        margin-right: 20px;
+      }
+      &-collapse {
+        position: absolute;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        right: 0;
+        top: 44px;
+        width: 200px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      }
+    }
+}
+
+.nav {
+  &-link {
+    margin-left: 30px;
+    &.active {
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      color: #002147;
+    }
+  }
+}
+
+.cms-navbar{
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9;
+}

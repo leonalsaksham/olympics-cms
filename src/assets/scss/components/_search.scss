@@ -1,0 +1,19 @@
+.searchbar {
+    padding: 50px;
+    background-color: $secondary-color;
+    border-radius: 20px;
+    margin-top: -80px;
+    label {
+        background-color: #fff;
+        padding: 0.375rem 0.75rem;
+        border-top-right-radius: 0.25rem !important;
+        border-bottom-right-radius: 0.25rem !important;
+    }
+    .input-group-text {
+        background-color: $primary-color;
+    }
+    .close-date {
+        position: absolute;
+        right: 0;
+    }
+}

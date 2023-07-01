@@ -1,0 +1,14 @@
+.btn {
+    &:active,
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+.btn-primary {
+    @include btn-primary;
+}
+
+.btn-secondary {
+    @include btn-secondary;
+}
