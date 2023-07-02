@@ -9,3 +9,32 @@
         padding-left: 260px !important;
     }
 }
+
+.status{
+    &.restrict{
+        color: red;
+    }
+    &.blocked{
+        color: $primary-color;
+    }
+}
+.display-news{
+    & > div{
+        background: $secondary-color;
+        position: relative;
+    }
+    h2{
+        font-size: 20px;
+        color: $primary-color;
+        margin-bottom: 10px;
+    }
+    p{
+        color: #ccc;
+    }
+    .edit-btn-news{
+        position: absolute;
+        right: 15px;
+        top: 5px;
+        padding: 0;
+    }
+}

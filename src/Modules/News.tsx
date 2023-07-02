@@ -15,7 +15,7 @@ function News() {
     <div>
       <div className="section-head">
         <h3>News</h3>
-        <Link to='/' className='btn btn-primary'><i className="fa-solid fa-plus ms-2"></i> Add New</Link>
+        {/* <Link to='/' className='btn btn-primary'><i className="fa-solid fa-plus ms-2"></i> Add New</Link> */}
       </div>
 
       <NewsContent />

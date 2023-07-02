@@ -1,41 +1,78 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
-import axiosInstance from '../../api/axios';
-import { getAllUsers } from '../../redux/actionCreator/userActionCreator';
-import { useAppDispatch, useAppSelector } from '../../redux/reduxHooks';
 import ConfirmationModal from '../Modals/ConfirmationModal';
 
 function UsersTable() {
 
   const [showModal, setShowModal] = useState<boolean>(false)
   const [userId, setUserId] = useState<number>(0)
-
-  const dispatch = useAppDispatch();
-
+  const [blockedUsers, setBlockedUsers] = useState<number[]>([]);
+  const [restrictedUsers, setRestrictedUsers] = useState<number[]>([]);
+  const [tableData, setTableData] = useState([
+    {
+      id: 1,
+      name: 'Saksham B. Shah',
+      email: 'sak@gmail.com',
+      dateCreated: '2022-11-22',
+      status: 'open',
+    },
+    {
+      id: 2,
+      name: 'John Doe',
+      email: 'john@gmail.com',
+      dateCreated: '2022-11-22',
+      status: 'open',
+    },
+    {
+      id: 3,
+      name: 'Ashley Wells',
+      email: 'ash@gmail.com',
+      dateCreated: '2022-11-22',
+      status: 'open',
+    },
+    {
+      id: 4,
+      name: 'Sandeep Risal',
+      email: 'sandeep@gmail.com',
+      dateCreated: '2022-11-22',
+      status: 'open',
+    },
+    {
+      id: 5,
+      name: 'Logal Paul',
+      email: 'lp@gmail.com',
+      dateCreated: '2022-11-22',
+      status: 'open',
+    },
+  ]);
   const closeModal = () => {
     setShowModal(false)
   }
 
-  const deleteUser = async (userId: number) => {
-    try {
-      const response = await axiosInstance.delete(`/users/${userId}`);
-      if (response.status === 200) {
-        setShowModal(false)
-        dispatch(getAllUsers({}));
-      }
-    } catch (error) {
-      console.log(error);
+  const deleteUser = (userId: number) => {
+    // Implement your delete logic here
+    setShowModal(false);
+    setTableData(prevState => prevState.filter(user => user.id !== userId));
+  };
 
-    }
-  }
+  const blockUser = (userId: number) => {
+    setBlockedUsers(prevState => [...prevState, userId]);
+    setRestrictedUsers(prevState => prevState.filter(id => id !== userId));
+  };
 
-  useEffect(() => {
-    dispatch(getAllUsers({}));
-  }, [dispatch])
+  const unblockUser = (userId: number) => {
+    setBlockedUsers(prevState => prevState.filter(id => id !== userId));
+  };
 
-  const { userData } = useAppSelector((state) => state.usersReducer)
+  const restrictUser = (userId: number) => {
+    setRestrictedUsers(prevState => [...prevState, userId]);
+    setBlockedUsers(prevState => prevState.filter(id => id !== userId));
+  };
+
+  const unrestrictUser = (userId: number) => {
+    setRestrictedUsers(prevState => prevState.filter(id => id !== userId));
+  };
 
   return (
     <>
@@ -53,82 +90,70 @@ function UsersTable() {
             <th>Name</th>
             <th>Email</th>
             <th>Date Created</th>
+            <th style={{width: 200}}>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1.</td>
-            <td>Saksham B. Shah</td>
-            <td>sak@gmail.com</td>
-            <td>2022-11-22</td>
-            <td>
-              {/* <Link to={`/users/${user._id}`} className='btn btn-secondary me-3'>Edit</Link> */}
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-danger'>Block</Button>
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-secondary ms-2'>Restrict</Button>
-            </td>
-          </tr>
-          <tr>
-            <td>2.</td>
-            <td>Sameen Shrestha</td>
-            <td>sameen@gmail.com</td>
-            <td>2022-11-22</td>
-            <td>
-              {/* <Link to={`/users/${user._id}`} className='btn btn-secondary me-3'>Edit</Link> */}
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-danger'>Block</Button>
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-secondary ms-2'>Restrict</Button>
-            </td>
-          </tr>
-          <tr>
-            <td>3.</td>
-            <td>John Doe</td>
-            <td>john.doe@gmail.com</td>
-            <td>2022-11-22</td>
-            <td>
-              {/* <Link to={`/users/${user._id}`} className='btn btn-secondary me-3'>Edit</Link> */}
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-danger'>Block</Button>
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-secondary ms-2'>Restrict</Button>
-            </td>
-          </tr>
-          <tr>
-            <td>4.</td>
-            <td>Doe John</td>
-            <td>doe@gmail.com</td>
-            <td>2022-11-22</td>
-            <td>
-              {/* <Link to={`/users/${user._id}`} className='btn btn-secondary me-3'>Edit</Link> */}
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-danger'>Block</Button>
-              <Button onClick={() => {
-                setShowModal(true);
-                // setUserId(user._id)
-              }} className='btn btn-secondary ms-2'>Restrict</Button>
-            </td>
-          </tr>
+        {tableData.map(user => (
+            <tr key={user.id}>
+              <td>{user.id}.</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.dateCreated}</td>
+              <td>
+                {blockedUsers.includes(user.id) ? (
+                  <span className="status blocked">Blocked</span>
+                ) : restrictedUsers.includes(user.id) ? (
+                  <span className="status restrict">Restricted</span>
+                ) : (
+                  <span>Open</span>
+                )}
+              </td>
+              <td>
+                {blockedUsers.includes(user.id) ? (
+                  <>
+                    <Button onClick={() => unblockUser(user.id)} className="btn btn-secondary me-3">
+                      Unblock
+                    </Button>
+                    <Button onClick={() => restrictUser(user.id)} className="btn btn-secondary ms-2">
+                      Restrict
+                    </Button>
+                  </>
+                ) : restrictedUsers.includes(user.id) ? (
+                  <>
+                    <Button onClick={() => blockUser(user.id)} className="btn btn-danger">
+                      Block
+                    </Button>
+                    <Button onClick={() => unrestrictUser(user.id)} className="btn btn-secondary ms-2">
+                      Unrestrict
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button onClick={() => blockUser(user.id)} className="btn btn-danger">
+                      Block
+                    </Button>
+                    <Button onClick={() => restrictUser(user.id)} className="btn btn-secondary ms-2">
+                      Restrict
+                    </Button>
+                  </>
+                )}
+                <Button
+                  onClick={() => {
+                    setShowModal(true);
+                    setUserId(user.id);
+                  }}
+                  className="btn btn-danger ms-2"
+                >
+                  Delete
+                </Button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </>
-
   )
 }
 
